@@ -74,7 +74,7 @@ class CryptoTaxCalculator:
         tax_events = []
 
         for tx in transactions:
-            print(tx)
+
             if isinstance(tx, Buy):
                 lot = Lot(purchase_time=tx.tx_time,
                           asset=tx.asset,
