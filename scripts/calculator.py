@@ -87,21 +87,21 @@ class CryptoTaxCalculator:
                 # we have a sale, which is a taxable event
                 asset_lots = portfolio[tx.asset]
 
-                remaining = tx.quantity
-                remaining_usd = tx.value
+                remaining_quantity = tx.quantity
+                remaining_value = tx.value
                 for index, lot in enumerate(asset_lots.copy()):
-                    if remaining == 0:
+                    if remaining_quantity == 0:
                         break
 
-                    if lot.quantity <= remaining:
+                    if lot.quantity <= remaining_quantity:
                         # if the sold amount is greater than what's in this current lot
                         # decrement the count
 
-                        percentage = lot.quantity / remaining
-                        lot_proceeds = remaining_usd * percentage
+                        percentage = lot.quantity / remaining_quantity
+                        lot_proceeds = remaining_value * percentage
 
-                        remaining = remaining - lot.quantity
-                        remaining_usd = remaining_usd - lot_proceeds
+                        remaining_quantity = remaining_quantity - lot.quantity
+                        remaining_value = remaining_value - lot_proceeds
 
                         tax_event = TaxableEvent(asset=tx.asset,
                                                  purchase_time=lot.purchase_time,
@@ -115,18 +115,18 @@ class CryptoTaxCalculator:
                         asset_lots.pop(0)
                     else:
                         # else, there is more in the lot than there is in the sold transaction
-                        percentage = remaining / lot.quantity
+                        percentage = remaining_quantity / lot.quantity
                         lot_basis = lot.basis * percentage
 
-                        lot.quantity = lot.quantity - remaining
+                        lot.quantity = lot.quantity - remaining_quantity
                         lot.basis = lot.basis - lot_basis
-                        remaining = Decimal(0)
+                        remaining_quantity = Decimal(0)
 
                         tax_event = TaxableEvent(asset=tx.asset,
                                                  purchase_time=lot.purchase_time,
                                                  sold_time=tx.tx_time,
                                                  basis=lot_basis,
-                                                 proceeds=remaining_usd)
+                                                 proceeds=remaining_value)
 
                         tax_events.append(tax_event)
 
@@ -192,7 +192,7 @@ def main(filename: str):
 
 if __name__ == '__main__':
 
-    filename = 'crypto_transactions.csv'
+    filename = 'data/crypto_transactions.csv'
     main(filename)
 
 
