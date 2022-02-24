@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+data/crypto_transactions.csv
+
+.idea/
+
 # Distribution / packaging
 .Python
 build/
