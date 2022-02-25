@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 data/crypto_transactions.csv
-
+lifo_transactions.csv
 .idea/
 
 # Distribution / packaging
